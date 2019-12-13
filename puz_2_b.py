@@ -10,4 +10,5 @@ if __name__ == "__main__":
                 print("%d, %d"%(i_1, i_2))
                 break
             else:
+                # print("%d, %d, %d"%(i_1, i_2, solution.final_solution()))
                 solution.reset_memory()
