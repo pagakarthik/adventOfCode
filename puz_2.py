@@ -25,7 +25,10 @@ class GravityAssist(object):
             i_1 = int(self.data[current_cmd+1])
             i_2 = int(self.data[current_cmd+2])
             out = int(self.data[current_cmd+3])
-            self.data[out] = self.parser[self.data[current_cmd]](self.data[i_1], self.data[i_2])
+            try:
+                self.data[out] = self.parser[self.data[current_cmd]](self.data[i_1], self.data[i_2])
+            except KeyError:
+                break
             current_cmd =  current_cmd + 4
         return self.data
 
