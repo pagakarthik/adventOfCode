@@ -27,17 +27,32 @@ class GravityAssist(object):
             out = int(self.data[current_cmd+3])
             self.data[out] = self.parser[self.data[current_cmd]](self.data[i_1], self.data[i_2])
             current_cmd =  current_cmd + 4
-        print(self.data)
         return self.data
+
+    def solve(self, input_1, input_2):
+        self.collect_data()
+        if len(self.data) != 0:
+            self.data[1] = input_1
+            self.data[2] = input_2
+        
+        self.digest_data()
+
+        return self.data
+    
+    def reset_memory(self):
+        self.collect_data()
+        return
+    
+    def final_solution(self):
+        return self.data[0]
 
 
 if __name__ == "__main__":
     solution = GravityAssist()
-    solution.collect_data()
-    print(len(solution.data))
-    output = solution.digest_data()
+    solution.solve(12, 2)
+    output = solution.final_solution()
 
-    print(len(solution.data))
+    print(output)
 
     
 
