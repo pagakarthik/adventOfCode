@@ -47,12 +47,5 @@ class GravityAssist(object):
         return self.data[0]
 
 
-if __name__ == "__main__":
-    solution = GravityAssist()
-    solution.solve(12, 2)
-    output = solution.final_solution()
-
-    print(output)
-
     
 
