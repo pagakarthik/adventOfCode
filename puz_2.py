@@ -8,6 +8,7 @@ class GravityAssist(object):
         with open("2_input.txt", 'r') as stream:
             data = stream.readlines()
 
+        self.data = []
         for line in data:
             self.data += line.strip().split(",")
         return
