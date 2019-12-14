@@ -37,7 +37,7 @@ class Crossing(object):
         for key, points in self.wire_crosses.items():
             closest_cross = 0
             proximity = np.Inf
-            print (points)
+            # print (points)
             for pt in points:
                 dist = abs(pt.real) + abs(pt.imag)
                 if dist != 0.0 and dist < proximity:

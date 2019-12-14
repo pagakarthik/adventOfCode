@@ -1,5 +1,6 @@
 import time
 from puz_2 import GravityAssist
+from puz_3 import Crossing
 
 def timer(func):
 
@@ -27,5 +28,17 @@ def puz_2_b():
     print ("Final solution: ", 100*i_1 + i_2)
     return
 
+@timer
+def puz_3_a():
+    solution = Crossing()
+    solution.collect_data()
+    # print (len(solution.data))
+    solution.find_crossings()
+    final_result = solution.crossing_closest_to_central_port()
+    print (final_result)
+    # print("Final result: ", abs(final_result.values()[0].real) + abs(final_result.values()[0].imag))
+
+
 if __name__ == "__main__":
-    puz_2_b()
+    # puz_2_b()
+    puz_3_a()
