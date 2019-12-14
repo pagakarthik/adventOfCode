@@ -38,7 +38,17 @@ def puz_3_a():
     print (final_result)
     # print("Final result: ", abs(final_result.values()[0].real) + abs(final_result.values()[0].imag))
 
+@timer
+def puz_3_b():
+    solution = Crossing()
+    solution.collect_data()
+    # print (len(solution.data))
+    solution.find_crossings()
+    final_result = solution.minimal_signal_delay()
+    print (final_result)
+    # print("Final result: ", abs(final_result.values()[0].real) + abs(final_result.values()[0].imag))
 
 if __name__ == "__main__":
     # puz_2_b()
-    puz_3_a()
+    # puz_3_a()
+    puz_3_b()

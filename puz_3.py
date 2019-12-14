@@ -7,6 +7,8 @@ class Crossing(object):
         self.data = {}
         self.wire_crosses = {}
         self.closest_crosses = {}
+        self.data_steps = {}
+        self.optimal_crosses = {}
         return
     
     def collect_data(self):
@@ -18,12 +20,18 @@ class Crossing(object):
             wire_stream = line.strip().split(",")
             point = 0
             wire = [point]
+            wire_steps = {point:0}
+            step_cnt = 0
             for element in wire_stream:
                 direction, distance = element[0], int(element[1:])
                 for _ in range(distance):
                     point += self.compass[direction]
+                    step_cnt += 1
                     wire.append(point)
+                    if point not in wire_steps:
+                        wire_steps[point] = step_cnt
             self.data[line_id] = wire
+            self.data_steps[line_id] = wire_steps
         return
     
     def find_crossings(self):
@@ -44,8 +52,21 @@ class Crossing(object):
                     closest_cross = pt
                     proximity = dist
             self.closest_crosses[key] = closest_cross
-            print(" For wire combination %s, closest_cross is: %s"%(str(key), str(pt)))
+            print(" For wire combination %s, closest_cross is: %s"%(str(key), str(closest_cross)))
         return self.closest_crosses
+
+    def minimal_signal_delay(self):
+        for key, points in self.wire_crosses.items():
+            optimal_cross = 0
+            loss = np.Inf
+            for pt in points:
+                loss_fn = self.data_steps[key[0]][pt] + self.data_steps[key[1]][pt]
+                if loss_fn != 0 and loss_fn < loss:
+                    optimal_cross = pt
+                    loss = loss_fn
+            self.optimal_crosses[key] = optimal_cross
+            print(" For wire combination %s, optimal_cross is: %s and the minimal signal delay is: %d"%(str(key), str(optimal_cross), loss))
+        return self.optimal_crosses
 
 
     
@@ -54,5 +75,6 @@ if __name__ == "__main__":
     solution.collect_data()
     # print (len(solution.data))
     solution.find_crossings()
-    final_result = solution.crossing_closest_to_central_port()
-    print(final_result)
+    # final_result = solution.crossing_closest_to_central_port()
+    # final_result_b = solution.minimal_signal_delay()
+    # print(final_result_b)
