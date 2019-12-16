@@ -54,6 +54,39 @@ class SContainer(object):
         
         return False
 
+    def naughty_elf_is_happy(self, value):
+        digit_cl = flatten(self.get_two_digit_collections(value))
+        max_val = 0.0
+        dual_list = []
+        for element in digit_cl:
+            str_element = str(element)
+            if str_element[0] == str_element[1]:
+                dual_list.append(element)
+                if element > max_val:
+                    max_val = element
+        # if dual_list.count(max_val) > 1:
+        #     return False
+        # else:
+        #     return True
+
+        """
+        by using the `.some` method, we only need 1 of the matches
+        to not be a part of a larger group
+        """
+        set_dual = set(dual_list)
+        dict_dual  = {}
+        for val in set_dual:
+            dict_dual[val] = dual_list.count(val)
+        
+        result = False
+        for val, ocrs in dict_dual.items():
+            if ocrs == 1:
+                result = True
+                break
+        
+        return result
+
+
     def iterate_over_range_and_solve(self):
         result = {}
         for key, limits in self.data.items():
@@ -66,12 +99,30 @@ class SContainer(object):
             result[key] = pwd
         return result
 
+    def iterate_over_range_and_solve_naughty_elf(self):
+        result = {}
+        for key, limits in self.data.items():
+            l_limit = limits['L']
+            u_limit = limits['U']
+            pwd = []
+            for val in range(l_limit, u_limit+1):
+                if self.is_a_code(val):
+                    if self.naughty_elf_is_happy(val):
+                        pwd.append(val)
+            result[key] = pwd
+        return result
 
 if __name__ == "__main__":
     solution = SContainer()
     solution.collect_data()
-    result = solution.iterate_over_range_and_solve()
-    for key, pwd in result.items():
+    # result_old = solution.iterate_over_range_and_solve()
+    result_new = solution.iterate_over_range_and_solve_naughty_elf()
+    # removed_pwd = []
+    # for val in result_old[0]:
+    #     if val not in result_new[0]:
+    #         removed_pwd.append(val) 
+    # print(removed_pwd)
+    for key, pwd in result_new.items():
         print("Number of password for key %s is %d"%(str(key), len(pwd)))
         
         

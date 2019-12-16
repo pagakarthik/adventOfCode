@@ -58,8 +58,17 @@ def puz_4_a():
     for key, pwd in result.items():
         print("Number of password for key %s is %d"%(str(key), len(pwd)))
 
+@timer
+def puz_4_b():
+    solution = SContainer()
+    solution.collect_data()
+    result = solution.iterate_over_range_and_solve_naughty_elf ()
+    for key, pwd in result.items():
+        print("Number of password for key %s is %d"%(str(key), len(pwd)))
+
 if __name__ == "__main__":
     # puz_2_b()
     # puz_3_a()
     # puz_3_b()
-    puz_4_a()
+    # puz_4_a()
+    puz_4_b()
