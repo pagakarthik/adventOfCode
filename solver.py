@@ -1,6 +1,7 @@
 import time
 from puz_2 import GravityAssist
 from puz_3 import Crossing
+from puz_4 import SContainer
 
 def timer(func):
 
@@ -48,7 +49,17 @@ def puz_3_b():
     print (final_result)
     # print("Final result: ", abs(final_result.values()[0].real) + abs(final_result.values()[0].imag))
 
+
+@timer
+def puz_4_a():
+    solution = SContainer()
+    solution.collect_data()
+    result = solution.iterate_over_range_and_solve()
+    for key, pwd in result.items():
+        print("Number of password for key %s is %d"%(str(key), len(pwd)))
+
 if __name__ == "__main__":
     # puz_2_b()
     # puz_3_a()
-    puz_3_b()
+    # puz_3_b()
+    puz_4_a()
