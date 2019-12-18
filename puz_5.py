@@ -14,7 +14,7 @@ class TEST(object):
     
     def read_from(self, addr):
         val = self.data[addr]
-        print("Value at addr %d is %d"%(addr, val))
+        print("Value at addr %s is %s"%(str(addr), str(val)))
         return
 
     def collect_data(self):
@@ -86,7 +86,9 @@ class TEST(object):
         current_cmd = 0
         while(len(self.data) != 0 and self.data[current_cmd][-2:] != "99"):
             try:
-                increment = self.increment[str(self.data[current_cmd])[-2:]]
+                print("cuurend cmd: ", current_cmd)
+                tmp = str(self.data[current_cmd])[-2:]
+                increment = self.increment[str(int(tmp))]
             except KeyError:
                 print ("last increment: ", increment)
                 print("Key error at increment: ", current_cmd)
@@ -119,7 +121,7 @@ if __name__ == "__main__":
     print(len(solution.data))
     print (solution.data[0])
     result = solution.digest_data()
-    # print ("result: ", result)
+    print ("result: ", result)
 
     
 
