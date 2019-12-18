@@ -8,6 +8,7 @@ class TEST(object):
 
     def write_to(self, addr):
         val = int(input("Enter the input"))
+        print ("addr: ", addr )
         self.data[addr] = str(val)
         return
     
@@ -39,6 +40,7 @@ class TEST(object):
     #     return
 
     def get_val(self, op_tuple):
+        print ("op tuple: ", op_tuple)
         if op_tuple[0] == 0:
             return int(self.data[op_tuple[1]])
         elif op_tuple[0] == 1:
@@ -58,9 +60,12 @@ class TEST(object):
             loc_back = 2 + oprnd_id
             operand = int(self.data[cur_addr + oprnd_id])
             try:
-                param_mode = self.data[cur_addr][-1*loc_back]
+                param_mode = int(self.data[cur_addr][-1*loc_back])
             except IndexError:
                 param_mode = 0
+            
+            if op_code in ["3", "4"]:
+                param_mode = 1
             operands[oprnd_id] = (param_mode, operand)
         print("op_code and operands: ", op_code, "&& ", operands)
         print("type of op code: ", type(op_code))
@@ -70,7 +75,7 @@ class TEST(object):
             self.data[out] = str(self.parser[op_code](self.get_val(operands[1]), self.get_val(operands[2])))
         elif op_code in ["3", "4"]:
             print("running i/o instruction")
-            self.parser[op_code](self.get_val(operands[2]))
+            self.parser[op_code](self.get_val(operands[1]))
         else:
             print("sending key error")
             raise KeyError
@@ -114,7 +119,7 @@ if __name__ == "__main__":
     print(len(solution.data))
     print (solution.data[0])
     result = solution.digest_data()
-    print ("result: ", result)
+    # print ("result: ", result)
 
     
 
