@@ -2,18 +2,18 @@ class TEST(object):
     def __init__(self):
         self.parser = {"1": self.add, "2": self.multiply, "3": self.write_to, "4": self.read_from}
         self.increment = {"1": 4, "2": 4, "3": 2, "4": 2, "99": 0}
-        self.number_of_operands = {"1": 2, "2": 2, "3": 1, "4": 1, "99": 0}
+        self.number_of_operands = {"1": 3, "2": 3, "3": 1, "4": 1, "99": 0}
         self.data = []
         return
 
     def write_to(self, addr):
         val = int(input("Enter the input"))
         print ("addr: ", addr )
-        self.data[addr] = str(val)
+        self.data[int(addr)] = str(val)
         return
     
     def read_from(self, addr):
-        val = self.data[addr]
+        val = self.data[int(addr)]
         print("Value at addr %s is %s"%(str(addr), str(val)))
         return
 
@@ -25,19 +25,20 @@ class TEST(object):
             self.data += line.strip().split(",")
         return
 
-    def add(self, i_1, i_2):
-        return int(i_1) + int(i_2)
-    
-    def multiply(self, i_1, i_2):
-        return int(i_1) * int(i_2)
-# can use decorator
-    # def add(self, i_1, i_2, op_loc):
-    #     self.data[op_loc] = int(i_1) + int(i_2)
-    #     return
+    # def add(self, i_1, i_2):
+    #     return int(i_1) + int(i_2)
     
     # def multiply(self, i_1, i_2):
-    #     self.data[op_loc] = int(i_1) * int(i_2)
-    #     return
+    #     return int(i_1) * int(i_2)
+    def add(self, i_1, i_2, op_loc):
+        print ("op_loc: ", op_loc)
+        self.data[int(op_loc)] = str(int(i_1) + int(i_2))
+        return
+    
+    def multiply(self, i_1, i_2, op_loc):
+        self.data[int(op_loc)] = str(int(i_1) * int(i_2))
+        return
+
 
     def get_val(self, op_tuple):
         print ("op tuple: ", op_tuple)
@@ -49,36 +50,33 @@ class TEST(object):
             print("Operand tuple (param_code, operand): ", op_tuple)
             raise ValueError("Unknown param code")
         return
-
     
     def execute_instruction(self, cur_addr):
         operation = self.data[cur_addr][-2:]
         op_code = str(int(operation))
         n_operands = self.number_of_operands[op_code]
-        operands = {}
+        operands = []
         for oprnd_id in range(1, n_operands+1):
             loc_back = 2 + oprnd_id
             operand = int(self.data[cur_addr + oprnd_id])
             try:
                 param_mode = int(self.data[cur_addr][-1*loc_back])
             except IndexError:
-                param_mode = 0
-            
+                param_mode = 0 
+            # expecting o/p to have param mode to be 0 always
+            # for I/o operation on the data
+            # passed valued is used as an address
+            # Thus, pass the value as is.
             if op_code in ["3", "4"]:
                 param_mode = 1
-            operands[oprnd_id] = (param_mode, operand)
-        print("op_code and operands: ", op_code, "&& ", operands)
-        print("type of op code: ", type(op_code))
-        if op_code in ["1", "2"]:
-            print ("Running add mul instruction")
-            out = int(self.data[cur_addr+3])
-            self.data[out] = str(self.parser[op_code](self.get_val(operands[1]), self.get_val(operands[2])))
-        elif op_code in ["3", "4"]:
-            print("running i/o instruction")
-            self.parser[op_code](self.get_val(operands[1]))
-        else:
-            print("sending key error")
-            raise KeyError
+            elif oprnd_id == 3:
+                param_mode = 1
+            operands.append((param_mode, operand))
+        
+        args = [self.get_val(op) for op in operands]
+        
+        # should be raising a key error automatically
+        self.parser[op_code](*args)
 
         return
 
@@ -89,6 +87,7 @@ class TEST(object):
                 print("cuurend cmd: ", current_cmd)
                 tmp = str(self.data[current_cmd])[-2:]
                 increment = self.increment[str(int(tmp))]
+                print("next increment: ", increment)
             except KeyError:
                 print ("last increment: ", increment)
                 print("Key error at increment: ", current_cmd)
