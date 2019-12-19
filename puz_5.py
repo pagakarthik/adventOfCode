@@ -8,7 +8,7 @@ class TEST(object):
 
     def write_to(self, addr):
         val = int(input("Enter the input"))
-        print ("addr: ", addr )
+        # print ("addr: ", addr )
         self.data[int(addr)] = str(val)
         return
     
@@ -31,7 +31,7 @@ class TEST(object):
     # def multiply(self, i_1, i_2):
     #     return int(i_1) * int(i_2)
     def add(self, i_1, i_2, op_loc):
-        print ("op_loc: ", op_loc)
+        # print ("op_loc: ", op_loc)
         self.data[int(op_loc)] = str(int(i_1) + int(i_2))
         return
     
@@ -41,7 +41,7 @@ class TEST(object):
 
 
     def get_val(self, op_tuple):
-        print ("op tuple: ", op_tuple)
+        # print ("op tuple: ", op_tuple)
         if op_tuple[0] == 0:
             return int(self.data[op_tuple[1]])
         elif op_tuple[0] == 1:
@@ -84,10 +84,10 @@ class TEST(object):
         current_cmd = 0
         while(len(self.data) != 0 and self.data[current_cmd][-2:] != "99"):
             try:
-                print("cuurend cmd: ", current_cmd)
+                # print("cuurend cmd: ", current_cmd)
                 tmp = str(self.data[current_cmd])[-2:]
                 increment = self.increment[str(int(tmp))]
-                print("next increment: ", increment)
+                # print("next increment: ", increment)
             except KeyError:
                 print ("last increment: ", increment)
                 print("Key error at increment: ", current_cmd)
@@ -95,7 +95,7 @@ class TEST(object):
             try:
                 self.execute_instruction(current_cmd)
             except KeyError:
-                print ("breaking out: ", current_cmd, ", ", self.data[current_cmd])
+                # print ("breaking out: ", current_cmd, ", ", self.data[current_cmd])
                 break
             # print ("Expected increment: ", increment)
             current_cmd =  current_cmd + increment
@@ -117,10 +117,10 @@ class TEST(object):
 if __name__ == "__main__":
     solution = TEST()
     solution.collect_data()
-    print(len(solution.data))
-    print (solution.data[0])
+    # print(len(solution.data))
+    # print (solution.data[0])
     result = solution.digest_data()
-    print ("result: ", result)
+    # print ("result: ", result)
 
     
 
