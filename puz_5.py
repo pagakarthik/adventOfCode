@@ -25,11 +25,6 @@ class TEST(object):
             self.data += line.strip().split(",")
         return
 
-    # def add(self, i_1, i_2):
-    #     return int(i_1) + int(i_2)
-    
-    # def multiply(self, i_1, i_2):
-    #     return int(i_1) * int(i_2)
     def add(self, i_1_loc, i_2_loc, op_loc):
         # print ("op_loc: ", op_loc)
         i_1 = self.data[int(i_1_loc)]
@@ -64,7 +59,6 @@ class TEST(object):
                 operand = int(self.data[cur_addr + oprnd_id])
             operands.append(operand)
         self.parser[op_code](*operands)
-
         return
 
     def digest_data(self):
