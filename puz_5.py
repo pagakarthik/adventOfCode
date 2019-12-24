@@ -30,12 +30,16 @@ class TEST(object):
     
     # def multiply(self, i_1, i_2):
     #     return int(i_1) * int(i_2)
-    def add(self, i_1, i_2, op_loc):
+    def add(self, i_1_loc, i_2_loc, op_loc):
         # print ("op_loc: ", op_loc)
+        i_1 = self.data[int(i_1_loc)]
+        i_2 = self.data[int(i_2_loc)]
         self.data[int(op_loc)] = str(int(i_1) + int(i_2))
         return
     
-    def multiply(self, i_1, i_2, op_loc):
+    def multiply(self, i_1_loc, i_2_loc, op_loc):
+        i_1 = self.data[int(i_1_loc)]
+        i_2 = self.data[int(i_2_loc)]
         self.data[int(op_loc)] = str(int(i_1) * int(i_2))
         return
 
@@ -58,25 +62,38 @@ class TEST(object):
         operands = []
         for oprnd_id in range(1, n_operands+1):
             loc_back = 2 + oprnd_id
-            operand = int(self.data[cur_addr + oprnd_id])
+            # operand = int(self.data[cur_addr + oprnd_id])
             try:
                 param_mode = int(self.data[cur_addr][-1*loc_back])
             except IndexError:
                 param_mode = 0 
+            # change the operand notation as follows:
+            # always send a reference to the location that
+            # needs to be used
+            # i.e, operand is always address
+            if param_mode == 1:
+                # send the immediate address
+                # operand = address of param
+                operand = int(cur_addr + oprnd_id)
+            else:
+                # send the value as the addres
+                # operand = value at the param location
+                operand = int(self.data[cur_addr + oprnd_id])
+            operands.append(operand)
             # expecting o/p to have param mode to be 0 always
             # for I/o operation on the data
             # passed valued is used as an address
             # Thus, pass the value as is.
-            if op_code in ["3", "4"]:
-                param_mode = 1
-            elif oprnd_id == 3:
-                param_mode = 1
-            operands.append((param_mode, operand))
+        #     if op_code in ["3", "4"]:
+        #         param_mode = 1
+        #     elif oprnd_id == 3:
+        #         param_mode = 1
+        #     operands.append((param_mode, operand))
         
-        args = [self.get_val(op) for op in operands]
+        # args = [self.get_val(op) for op in operands]
         
         # should be raising a key error automatically
-        self.parser[op_code](*args)
+        self.parser[op_code](*operands)
 
         return
 
