@@ -42,18 +42,6 @@ class TEST(object):
         i_2 = self.data[int(i_2_loc)]
         self.data[int(op_loc)] = str(int(i_1) * int(i_2))
         return
-
-
-    def get_val(self, op_tuple):
-        # print ("op tuple: ", op_tuple)
-        if op_tuple[0] == 0:
-            return int(self.data[op_tuple[1]])
-        elif op_tuple[0] == 1:
-            return int(op_tuple[1])
-        else:
-            print("Operand tuple (param_code, operand): ", op_tuple)
-            raise ValueError("Unknown param code")
-        return
     
     def execute_instruction(self, cur_addr):
         operation = self.data[cur_addr][-2:]
@@ -69,12 +57,10 @@ class TEST(object):
             except IndexError:
                 param_mode = 0 
             if param_mode == 1:
-                # send the immediate address
-                # operand = address of param
+                # send the param address
                 operand = int(cur_addr + oprnd_id)
             else:
-                # send the value as the addres
-                # operand = value at the param location
+                # send the value at the param addres
                 operand = int(self.data[cur_addr + oprnd_id])
             operands.append(operand)
         self.parser[op_code](*operands)
