@@ -1,9 +1,52 @@
 class TEST(object):
     def __init__(self):
-        self.parser = {"1": self.add, "2": self.multiply, "3": self.write_to, "4": self.read_from}
-        self.increment = {"1": 4, "2": 4, "3": 2, "4": 2, "99": 0}
-        self.number_of_operands = {"1": 3, "2": 3, "3": 1, "4": 1, "99": 0}
+        self.parser = {"1": self.add, "2": self.multiply, "3": self.write_to, "4": self.read_from, "5": self.jump_if_true,
+                        "6": self.jump_if_false, "7": self.less_than, "8": self.equals}
+        self.increment = {"1": 4, "2": 4, "3": 2, "4": 2, "5":3, "6":3, "7":4, "8":4, "99": 0}
+        self.number_of_operands = {"1": 3, "2": 3, "3": 1, "4": 1, "5":2, "6":2, "7":3, "8":3, "99": 0}
         self.data = []
+        return
+
+    def less_than(self, i_1_loc, i_2_loc, op_loc):
+        i_1 = self.data[int(i_1_loc)]
+        i_2 = self.data[int(i_2_loc)]
+        if i_1 < i_2:
+            self.data[int(op_loc)] = str(1)
+        else:
+            self.data[int(op_loc)] = str(0)
+
+        self.current_cmd = self.current_cmd + self.increment['7'] 
+        return
+    
+    def equals(self, i_1_loc, i_2_loc, op_loc):
+        i_1 = self.data[int(i_1_loc)]
+        i_2 = self.data[int(i_2_loc)]
+        if i_1 == i_2:
+            self.data[int(op_loc)] = str(1)
+        else:
+            self.data[int(op_loc)] = str(0)
+
+        self.current_cmd = self.current_cmd + self.increment['8'] 
+        return 
+    
+    def jump_if_true(self, i_1_loc, i_2_loc):
+        i_1 = self.data[int(i_1_loc)]
+        i_2 = self.data[int(i_2_loc)]
+        if int(i_1) != 0:
+            self.current_cmd = int(i_2)
+        else:
+            # neglect current instruction and proceed
+            self.current_cmd = self.current_cmd + self.increment['5']        
+        return
+    
+    def jump_if_false(self, i_1_loc, i_2_loc):
+        i_1 = self.data[int(i_1_loc)]
+        i_2 = self.data[int(i_2_loc)]
+        if int(i_1) == 0:
+            self.current_cmd = int(i_2)
+        else:
+            # neglect current instruction and proceed
+            self.current_cmd = self.current_cmd + self.increment['6']         
         return
 
     def write_to(self, addr):
@@ -70,7 +113,9 @@ class TEST(object):
         # the loop is expected to terminte by itself (with the Key error)
         while(len(self.data) != 0 and self.data[self.current_cmd][-2:] != "99"):
             try:
+                # print ("current_operation: ", self.data[self.current_cmd][-2:])
                 self.execute_instruction(self.current_cmd)
+                # print("new_data: ", self.data)
             except KeyError:
                 # print ("breaking out: ", self.current_cmd, ", ", self.data[self.current_cmd])
                 break
