@@ -10,11 +10,13 @@ class TEST(object):
         val = int(input("Enter the input"))
         # print ("addr: ", addr )
         self.data[int(addr)] = str(val)
+        self.current_cmd = self.current_cmd + self.increment['3'] 
         return
     
     def read_from(self, addr):
         val = self.data[int(addr)]
         print("Value at addr %s is %s"%(str(addr), str(val)))
+        self.current_cmd = self.current_cmd + self.increment["4"] 
         return
 
     def collect_data(self):
@@ -30,12 +32,14 @@ class TEST(object):
         i_1 = self.data[int(i_1_loc)]
         i_2 = self.data[int(i_2_loc)]
         self.data[int(op_loc)] = str(int(i_1) + int(i_2))
+        self.current_cmd = self.current_cmd + self.increment["1"] 
         return
     
     def multiply(self, i_1_loc, i_2_loc, op_loc):
         i_1 = self.data[int(i_1_loc)]
         i_2 = self.data[int(i_2_loc)]
         self.data[int(op_loc)] = str(int(i_1) * int(i_2))
+        self.current_cmd = self.current_cmd + self.increment["2"] 
         return
     
     def execute_instruction(self, cur_addr):
@@ -63,23 +67,24 @@ class TEST(object):
 
     def digest_data(self):
         self.current_cmd = 0
+        # the loop is expected to terminte by itself (with the Key error)
         while(len(self.data) != 0 and self.data[self.current_cmd][-2:] != "99"):
-            try:
-                # print("cuurend cmd: ", self.current_cmd)
-                tmp = str(self.data[self.current_cmd])[-2:]
-                increment = self.increment[str(int(tmp))]
-                # print("next increment: ", increment)
-            except KeyError:
-                print ("last increment: ", increment)
-                print("Key error at increment: ", self.current_cmd)
-                break
+            # try:
+            #     # print("cuurend cmd: ", self.current_cmd)
+            #     tmp = str(self.data[self.current_cmd])[-2:]
+            #     increment = self.increment[str(int(tmp))]
+            #     # print("next increment: ", increment)
+            # except KeyError:
+            #     print ("last increment: ", increment)
+            #     print("Key error at increment: ", self.current_cmd)
+            #     break
             try:
                 self.execute_instruction(self.current_cmd)
             except KeyError:
                 # print ("breaking out: ", self.current_cmd, ", ", self.data[self.current_cmd])
                 break
             # print ("Expected increment: ", increment)
-            self.current_cmd =  self.current_cmd + increment
+            # self.current_cmd =  self.current_cmd + increment
         return self.data
 
     def solve(self):
