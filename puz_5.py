@@ -62,24 +62,24 @@ class TEST(object):
         return
 
     def digest_data(self):
-        current_cmd = 0
-        while(len(self.data) != 0 and self.data[current_cmd][-2:] != "99"):
+        self.current_cmd = 0
+        while(len(self.data) != 0 and self.data[self.current_cmd][-2:] != "99"):
             try:
-                # print("cuurend cmd: ", current_cmd)
-                tmp = str(self.data[current_cmd])[-2:]
+                # print("cuurend cmd: ", self.current_cmd)
+                tmp = str(self.data[self.current_cmd])[-2:]
                 increment = self.increment[str(int(tmp))]
                 # print("next increment: ", increment)
             except KeyError:
                 print ("last increment: ", increment)
-                print("Key error at increment: ", current_cmd)
+                print("Key error at increment: ", self.current_cmd)
                 break
             try:
-                self.execute_instruction(current_cmd)
+                self.execute_instruction(self.current_cmd)
             except KeyError:
-                # print ("breaking out: ", current_cmd, ", ", self.data[current_cmd])
+                # print ("breaking out: ", self.current_cmd, ", ", self.data[self.current_cmd])
                 break
             # print ("Expected increment: ", increment)
-            current_cmd =  current_cmd + increment
+            self.current_cmd =  self.current_cmd + increment
         return self.data
 
     def solve(self):
