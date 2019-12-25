@@ -2,6 +2,7 @@ import time
 from puz_2 import GravityAssist
 from puz_3 import Crossing
 from puz_4 import SContainer
+from puz_5 import TEST
 
 def timer(func):
 
@@ -66,9 +67,17 @@ def puz_4_b():
     for key, pwd in result.items():
         print("Number of password for key %s is %d"%(str(key), len(pwd)))
 
+@timer
+def puz_5():
+    solution = TEST()
+    solution.collect_data()
+    result = solution.digest_data()
+    return
+
 if __name__ == "__main__":
     # puz_2_b()
     # puz_3_a()
     # puz_3_b()
     # puz_4_a()
-    puz_4_b()
+    # puz_4_b()
+    puz_5() # enter 1 for 5_a and 5 for 5_b
