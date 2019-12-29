@@ -30,8 +30,31 @@ class UniversalOrbitMap():
         self.checksum = total_number_of_orbits
         return total_number_of_orbits
 
+    def find_path_for_planet(self, planet):
+        path = []
+        if planet not in self.orbit_map:
+            return []
+        else:
+            path.append(planet)
+            return path + self.find_path_for_planet(self.orbit_map[planet])
+    
+    def find_closest_path(self, path_a, path_b):
+        # return (list(set(path_a).difference(set(path_b))), list(set(path_b).difference(set(path_a))))
+        return ([i for i in path_a if i not in path_b], [j for j in path_b if j not in path_a])
+    
+    def paths_for_you_and_santa(self):
+        you_path = self.find_path_for_planet("YOU")
+        san_path = self.find_path_for_planet("SAN")
+        # print("you_path: ", you_path)
+        # print("san_path: ", san_path)
+        return (you_path, san_path)
+
+
 if __name__ == "__main__":
     solution = UniversalOrbitMap()
     solution.collect_data()
-    checksum_result = solution.get_checksum()
-    print ("checksum: ", checksum_result)
+    # checksum_result = solution.get_checksum()
+    # print ("checksum: ", checksum_result)
+    you_path, san_path = solution.paths_for_you_and_santa()
+    paths = solution.find_closest_path(you_path, san_path)
+    print("result: ", len(paths[0]) + len(paths[1]) -2)

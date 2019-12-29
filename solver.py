@@ -3,6 +3,7 @@ from puz_2 import GravityAssist
 from puz_3 import Crossing
 from puz_4 import SContainer
 from puz_5 import TEST
+from puz_6 import UniversalOrbitMap
 
 def timer(func):
 
@@ -74,10 +75,28 @@ def puz_5():
     result = solution.digest_data()
     return
 
+@timer
+def puz_6_a():
+    solution = UniversalOrbitMap()
+    solution.collect_data()
+    checksum_result = solution.get_checksum()
+    print ("checksum: ", checksum_result)
+    return checksum_result
+
+@timer
+def puz_6_b():
+    solution = UniversalOrbitMap()
+    solution.collect_data()
+    you_path, san_path = solution.paths_for_you_and_santa()
+    paths = solution.find_closest_path(you_path, san_path)
+    print("result: ", len(paths[0]) + len(paths[1]) -2)
+    return paths
+
 if __name__ == "__main__":
     # puz_2_b()
     # puz_3_a()
     # puz_3_b()
     # puz_4_a()
     # puz_4_b()
-    puz_5() # enter 1 for 5_a and 5 for 5_b
+    # puz_5() # enter 1 for 5_a and 5 for 5_b
+    puz_6_b()
